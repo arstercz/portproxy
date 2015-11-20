@@ -1,7 +1,7 @@
 package main
 
 /*
-Run as a transfer.sh proxy if there are multi datacentors in your
+Run as a tcp port proxy if there are multi datacentors in your
 production, Receive the traffic and redirect to tranfer.sh server.
 
 cz-20151119
