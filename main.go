@@ -2,7 +2,7 @@ package main
 
 /*
 Run as a tcp port proxy if there are multi datacentors in your
-production, Receive the traffic and redirect to tranfer.sh server.
+production, Receive the traffic and redirect to real server.
 
 cz-20151119
 */
