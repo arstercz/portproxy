@@ -4,6 +4,7 @@ import (
 	"io"
 	"log"
 	"net"
+	"strings"
 	"sync/atomic"
 	"time"
 )
@@ -33,16 +34,21 @@ func New(bind, backend string, size uint32) *Proxy {
 	}
 }
 
-func (t *Proxy) pipe(dst, src *Conn, c chan int64) {
+func (t *Proxy) pipe(dst, src *Conn, c chan int64, tag string) {
 	defer func() {
 		dst.CloseWrite()
 		dst.CloseRead()
 	}()
-	n, err := io.Copy(dst, src)
-	if err != nil {
-		log.Print(err)
+	if strings.EqualFold(tag, "send") {
+		proxyLog(src, dst)
+		c <- 0
+	} else {
+		n, err := io.Copy(dst, src)
+		if err != nil {
+			log.Print(err)
+		}
+		c <- n
 	}
-	c <- n
 }
 
 func (t *Proxy) transport(conn net.Conn) {
@@ -65,8 +71,8 @@ func (t *Proxy) transport(conn net.Conn) {
 	bindConn = NewConn(conn, t.pool)
 	backendConn = NewConn(conn2, t.pool)
 
-	go t.pipe(backendConn, bindConn, writeChan)
-	go t.pipe(bindConn, backendConn, readChan)
+	go t.pipe(backendConn, bindConn, writeChan, "send")
+	go t.pipe(bindConn, backendConn, readChan, "receive")
 
 	readBytes = <-readChan
 	writeBytes = <-writeChan

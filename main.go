@@ -34,6 +34,8 @@ func waitSignal() {
 //net timeout
 const timeout = time.Second * 2
 
+var Bsize uint
+
 func main() {
 	// options
 	var bind, backend, logTo string
@@ -45,6 +47,7 @@ func main() {
 	flag.UintVar(&buffer, "buffer", 4096, "buffer size")
 	flag.BoolVar(&daemon, "daemon", false, "run as daemon process")
 	flag.Parse()
+	Bsize = buffer
 
 	log.SetOutput(os.Stdout)
 	if logTo == "syslog" {
