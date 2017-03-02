@@ -1,0 +1,3 @@
+[backend]
+dsn = user_test:Aksj@qop@tcp(127.0.0.1:3306)/test?charset=utf8
+
