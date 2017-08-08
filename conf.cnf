@@ -1,3 +1,6 @@
 [backend]
-dsn = user_test:Aksj@qop@tcp(127.0.0.1:3306)/test?charset=utf8
+dsn = user_ffm:Aksj@qop@tcp(10.3.254.119:3306)/ffm?charset=utf8
 
+[onlineread]
+user = user_read
+pass = xxxxxxxxxxx

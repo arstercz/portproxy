@@ -38,6 +38,8 @@ const timeout = time.Second * 2
 var Bsize uint
 var Verbose bool
 var Dbh *sql.DB
+var MysqlUser string
+var MysqlPass string
 
 func main() {
 	// options
@@ -69,6 +71,10 @@ func main() {
 		log.Printf("Can't get database handle, skip insert log to mysql...\n")
 	}
 	defer Dbh.Close()
+	MysqlUser, MysqlPass, err = get_read_user(conf_fh)
+	if err != nil {
+		log.Fatal(err)
+	}
 
 	log.SetOutput(os.Stdout)
 	if logTo == "syslog" {

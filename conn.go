@@ -10,6 +10,16 @@ type Conn struct {
 	pool *recycler
 }
 
+type ClientConn struct {
+	user string
+	auth []byte
+}
+
+type ServerConn struct {
+	protocol uint16
+	salt []byte
+}
+
 func NewConn(conn net.Conn, pool *recycler) *Conn {
 	return &Conn{
 		conn: conn,
@@ -42,3 +52,4 @@ func (c *Conn) CloseWrite() {
 		conn.CloseWrite()
 	}
 }
+

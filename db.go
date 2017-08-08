@@ -6,6 +6,7 @@ import (
 	"fmt"
 	_ "github.com/go-sql-driver/mysql"
 	"log"
+	"crypto/sha1"
 )
 
 func dbh(dsn string) (db *sql.DB, err error) {
@@ -47,4 +48,43 @@ func insertlog(db *sql.DB, t *query) bool {
 		return false
 	}
 	return true
+}
+
+func userSecret(db *sql.DB, user string) (secret string, err error) {
+	selectSQL := `select secret from otp_secret where name = '%s'`
+	err = QueryRow(db, fmt.Sprintf(selectSQL, user)).Scan(&secret)
+	if err != nil {
+		return "", err
+	}
+	return secret, nil
+}
+
+// calculate mysql password
+func calcPassword(scramble, password []byte) []byte {
+	if len(password) == 0 {
+		return nil
+	}
+
+	// stageHash = SHA1(password)
+	crypt := sha1.New()
+	crypt.Write(password)
+	stage1 := crypt.Sum(nil)
+
+	// scrambleHash = SHA1(scramble + SHA1(stage1Hash))
+	// inner Hash
+	crypt.Reset()
+	crypt.Write(stage1)
+	hash := crypt.Sum(nil)
+
+	// outer Hash
+	crypt.Reset()
+	crypt.Write(scramble)
+	crypt.Write(hash)
+	scramble = crypt.Sum(nil)
+
+	// token = scrambleHash XOR stageHash
+	for i, _ := range scramble {
+		scramble[i] ^= stage1[i]
+	}
+	return scramble
 }
