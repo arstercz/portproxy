@@ -37,7 +37,22 @@ portproxy can also log mysql queries:
 2017/01/12 17:28:04 From 10.0.21.7:29110 To 10.0.21.5:3301; Query: kill 2
 ```
 
+### totp features
+
+We add google totp verify when user connect to MySQL. The following explain the workflow:
+```
+             user/user+totp                   mysql_user/pass
+  +------+                     +-----------+                     +--------------+
+  | user |  ---------------->  | portproxy | ------------------> | MySQL Server |
+  +------+                     +-----------+                     +--------------+
+
+```
+user connect portproxy with `username`(mysql -u option) and `password`(username + (6 bit number from totp) by default, `portproxy` parse the mysql connection phase protocols, if it verified ok, then `portproxy` make a new connection packet with real mysql user/pass(you can specify the user/pass in conf.cnf file), then you can login to MySQL Server.
+
+note: you can store totp secret in `otp_secret` table.
+
 ## changelog:
 ```
-20170112: log mysql query
+20170808: add totp feature, user connect portproxy with totp password when login MySQL.
+20170112: log mysql query.
 ```

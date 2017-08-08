@@ -13,3 +13,9 @@ CREATE TABLE `query_log` (
       KEY `idx_server` (`server`),
       KEY `idx_cretime` (`create_time`)
 ) ENGINE=InnoDB AUTO_INCREMENT=9945 DEFAULT CHARSET=utf8
+
+CREATE TABLE `otp_secret` (
+      `name` varchar(50) NOT NULL,
+      `secret` char(16) DEFAULT NULL,
+      UNIQUE KEY `unq_name` (`name`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8
