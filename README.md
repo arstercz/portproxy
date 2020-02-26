@@ -4,8 +4,10 @@ A TCP port proxy utility inspired by qtunnel(https://github.com/getqujing/qtunne
 ## How to Build
 
  ```
- git clone https://github.com/chenzhe07/portproxy.git
- cd portproxy
+ go get github.com/chenzhe07/portproxy
+ go get github.com/VividCortex/godaemon
+ go get github.com/chenzhe07/goconfig
+ cd ~/go/src/github.com/chenzhe07/portproxy
  go build -o portproxy *.go
  ```
 
