@@ -1,14 +1,10 @@
 # portproxy
 A TCP port proxy utility inspired by qtunnel(https://github.com/getqujing/qtunnel)
 
-## How to Build
+## How to Install
 
  ```
- go get github.com/chenzhe07/portproxy
- go get github.com/VividCortex/godaemon
- go get github.com/chenzhe07/goconfig
- cd ~/go/src/github.com/chenzhe07/portproxy
- go build -o portproxy *.go
+ go get github.com/arstercz/portproxy
  ```
 
 ## Usage

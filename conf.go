@@ -2,7 +2,7 @@
 package main
 
 import (
-	"github.com/chenzhe07/goconfig"
+	"github.com/arstercz/goconfig"
 )
 
 func get_config(conf string) (c *goconfig.ConfigFile, err error) {
