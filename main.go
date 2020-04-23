@@ -52,8 +52,8 @@ func main() {
 	flag.StringVar(&logTo, "logTo", "stdout", "stdout or syslog")
 	flag.UintVar(&buffer, "buffer", 4096, "buffer size")
 	flag.BoolVar(&daemon, "daemon", false, "run as daemon process")
-	flag.BoolVar(&verbose, "verbose", false, "print verbose message")
-	flag.StringVar(&conf, "conf", "", "config file to verify database and firewall info")
+	flag.BoolVar(&verbose, "verbose", false, "print verbose sql query")
+	flag.StringVar(&conf, "conf", "", "config file to verify database and record sql query")
 	flag.Parse()
 	Bsize = buffer
 	Verbose = verbose
@@ -61,14 +61,14 @@ func main() {
 	conf_fh, err := get_config(conf)
 	if err != nil {
 		log.Printf("Can't get config info, skip insert log to mysql...\n")
-	}
-
-	backend_dsn, _ := get_backend_dsn(conf_fh)
-	Dbh, err = dbh(backend_dsn)
-	if err != nil {
-		log.Printf("Can't get database handle, skip insert log to mysql...\n")
-	}
-	defer Dbh.Close()
+	} else {
+	    backend_dsn, _ := get_backend_dsn(conf_fh)
+	    Dbh, err = dbh(backend_dsn)
+    	if err != nil {
+	    	log.Printf("Can't get database handle, skip insert log to mysql...\n")
+	    }
+	    defer Dbh.Close()
+    }
 
 	log.SetOutput(os.Stdout)
 	if logTo == "syslog" {

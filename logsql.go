@@ -170,7 +170,7 @@ func proxyLog(src, dst *Conn) {
 				sqlInfo.sqlString = converToUnixLine(sql_escape(string(buffer[5:n])))
 			}
 
-			if !strings.EqualFold(sqlInfo.sqlType, "") {
+			if !strings.EqualFold(sqlInfo.sqlType, "") && Dbh != nil {
 				insertlog(Dbh, &sqlInfo)
 			}
 

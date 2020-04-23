@@ -1,5 +1,8 @@
 # portproxy
-A TCP port proxy utility inspired by qtunnel(https://github.com/getqujing/qtunnel)
+
+A TCP port proxy utility inspired by qtunnel(https://github.com/getqujing/qtunnel).
+
+**note:** `portproxy` does not suport ssl mode(mysql 5.7/8.0 client), only used in test environments.
 
 ## How to Install
 
@@ -11,15 +14,25 @@ A TCP port proxy utility inspired by qtunnel(https://github.com/getqujing/qtunne
 
 ```
 Usage of ./portproxy:
-  -backend="127.0.0.1:8003": backend server ip and port
-  -bind=":8002": locate ip and port
-  -buffer=4096: buffer size
-  -daemon=false: run as daemon process
-  -logTo="stdout": stdout or syslog
+  -backend string
+        backend server ip and port (default "127.0.0.1:8003")
+  -bind string
+        locate ip and port (default ":8002")
+  -buffer uint
+        buffer size (default 4096)
+  -conf string
+        config file to verify database and record sql query
+  -daemon
+        run as daemon process
+  -logTo string
+        stdout or syslog (default "stdout")
+  -verbose
+        print verbose sql query
 ```
-portproxy can also log mysql queries:
+
+portproxy only print mysql queries when `conf` is not set:
 ```
-./portproxy -backend="10.0.21.5:3301" -bind=":3316" -buffer=16384 
+./portproxy -backend="10.0.21.5:3301" -bind=":3316" -buffer=16384  --verbose
 2017/01/12 17:27:23 portproxy started.
 2017/01/12 17:27:32 client: 10.0.21.7:29110 ==> 10.0.21.5:3316
 2017/01/12 17:27:32 proxy: 10.0.21.5:18386 ==> 10.0.21.5:3301
@@ -37,5 +50,6 @@ portproxy can also log mysql queries:
 
 ## changelog:
 ```
+20200423: skip error when does not set conf option
 20170112: log mysql query
 ```
